@@ -1,0 +1,13 @@
+const campaigns=[
+{title:"Glow Up Skincare",brand:"Luma Beauty",category:"Beauty",reward:"৳5,000 + PR package",description:"Create an honest skincare routine reel featuring a new product launch."},
+{title:"Everyday Style Edit",brand:"Thread & Co.",category:"Fashion",reward:"৳3,500 + outfit",description:"Style a versatile look and share it with your audience."},
+{title:"Cozy Home Moments",brand:"Nest Living",category:"Home & Lifestyle",reward:"Products worth ৳4,000",description:"Show how you add thoughtful details to your living space."}];
+const campaignList=document.getElementById("campaignList");
+function renderCampaigns(){campaignList.innerHTML="";campaigns.forEach((c,i)=>{const card=document.createElement("article");card.className="campaign";card.innerHTML=`<span class="tag">${c.category}</span><h3>${c.title}</h3><p>${c.description}</p><p>By ${c.brand}</p><strong>${c.reward}</strong><button class="primary-btn" data-apply="${i}">Apply now</button>`;campaignList.appendChild(card);});}
+renderCampaigns();
+campaignList.addEventListener("click",e=>{const i=e.target.dataset.apply;if(i!==undefined)alert(`Demo application submitted for: ${campaigns[i].title}`);});
+let isBrand=false;document.getElementById("roleToggle").addEventListener("click",()=>{isBrand=!isBrand;document.getElementById("roleToggle").textContent=isBrand?"Switch to Creator":"Switch to Brand";document.getElementById("brandPanel").classList.toggle("hidden",!isBrand);if(isBrand)document.getElementById("brandPanel").scrollIntoView({behavior:"smooth"});});
+document.getElementById("campaignForm").addEventListener("submit",e=>{e.preventDefault();campaigns.unshift({title:document.getElementById("campaignName").value,brand:document.getElementById("brandName").value,category:"New campaign",reward:document.getElementById("campaignReward").value,description:"A new demo opportunity from a brand."});renderCampaigns();e.target.reset();alert("Your demo campaign has been published!");});
+let stream=null;const video=document.getElementById("camera"),canvas=document.getElementById("photoCanvas");
+document.getElementById("startCamera").addEventListener("click",async()=>{try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:false});video.srcObject=stream;}catch(err){alert("Camera could not start. Allow camera permission and use localhost or HTTPS.");}});
+document.getElementById("takePhoto").addEventListener("click",()=>{if(!video.videoWidth){alert("Start the camera first.");return;}canvas.width=video.videoWidth;canvas.height=video.videoHeight;canvas.getContext("2d").drawImage(video,0,0);alert("Photo captured in the preview.");});
